@@ -44,23 +44,23 @@ Notice how **Components subscribe directly to the Custom Hooks**, bypassing the 
 flowchart TD
     %% Redux Store Connections
     subgraph Redux Reducers
-        Store((app/store.js))
-        P_Slice[productSlice (API API)]
-        C_Slice[cartSlice (Local State)]
+        Store(("app/store.js"))
+        P_Slice["productSlice (API)"]
+        C_Slice["cartSlice (Local)"]
     end
 
     %% State Logic Hooks
-    subgraph Custom Hooks (Business Logic)
-        H_Products(useProducts.js)
-        H_Cart(useCart.js)
+    subgraph Custom Hooks
+        H_Products("useProducts.js")
+        H_Cart("useCart.js")
     end
 
     %% UI Components
     subgraph React UI Components
-        UI_Header[Header.jsx]
-        UI_Stats[Stats.jsx]
-        UI_Card[ProductCard.jsx]
-        UI_App[App.jsx]
+        UI_Header["Header.jsx"]
+        UI_Stats["Stats.jsx"]
+        UI_Card["ProductCard.jsx"]
+        UI_App["App.jsx"]
     end
 
     %% Flow Path
@@ -70,15 +70,15 @@ flowchart TD
     Store -->|Reads Redux State| H_Products
     Store -->|Reads Redux State| H_Cart
     
-    H_Products -.->|Provides Data / Fetches| UI_App
+    H_Products -.->|Provides Data| UI_App
     
     H_Products ==>|Products & totalValue| UI_Stats
     H_Cart ==>|totalCartPrice & totalQuantity| UI_Stats
     
     H_Cart ==>|totalCartQuantity| UI_Header
     
-    H_Cart ==>|dispatch addToCart()| UI_Card
-    H_Products ==>|dispatch removeProduct()| UI_Card
+    H_Cart ==>|dispatch addToCart| UI_Card
+    H_Products ==>|dispatch removeProduct| UI_Card
 ```
 
 > **Why this matters?** As seen in the diagram, `UI_Stats` and `UI_Header` grab their data directly from hooks. `App.jsx` doesn't need to know anything about the Cart!
