@@ -1,0 +1,17 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Smartphone X",
+      "price": 699,
+      "category": "Electronics"
+    },
+    {
+      "id": "2",
+      "name": "Wireless Headphones",
+      "price": 199,
+      "category": "Accessories"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
