@@ -1,8 +1,14 @@
+import React from 'react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
+import { Product } from '../types';
 
-const ProductCard = ({ product, onEditClick }) => {
-  // Consume dispatch actions directly inside the child component!
+interface ProductCardProps {
+  product: Product;
+  onEditClick: (product: Product) => void;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onEditClick }) => {
   const { removeProduct } = useProducts();
   const { addProductToCart } = useCart();
 
@@ -14,7 +20,6 @@ const ProductCard = ({ product, onEditClick }) => {
         <p className="price">${product.price}</p>
       </div>
       <div className="card-actions">
-        {/* Directly using Redux to Add to Cart */}
         <button 
           className="btn-primary" 
           onClick={() => addProductToCart(product)}
@@ -24,7 +29,6 @@ const ProductCard = ({ product, onEditClick }) => {
         </button>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button className="btn-edit" onClick={() => onEditClick(product)}>Edit</button>
-          {/* Directly using Redux to Delete, bypassing parent App.jsx */}
           <button className="btn-delete" onClick={() => removeProduct(product.id)}>Delete</button>
         </div>
       </div>

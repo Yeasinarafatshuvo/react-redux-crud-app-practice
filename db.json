@@ -9,8 +9,20 @@
     {
       "id": "2",
       "name": "Wireless Headphones",
-      "price": 199,
+      "price": "200",
       "category": "Accessories"
+    },
+    {
+      "name": "Test Product",
+      "price": 33,
+      "category": "electronics",
+      "id": "cmYcnx63Moo"
+    },
+    {
+      "name": "Electric Fan",
+      "price": 300,
+      "category": "Electronics",
+      "id": "WMBwcdheVg4"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

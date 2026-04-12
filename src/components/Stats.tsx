@@ -1,8 +1,8 @@
+import React from 'react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
 
-const Stats = () => {
-  // Children directly accessing Redux state via hooks! NO PROPS NEEDED!
+const Stats: React.FC = () => {
   const { products, totalValue } = useProducts();
   const { totalCartPrice, totalCartQuantity } = useCart();
 

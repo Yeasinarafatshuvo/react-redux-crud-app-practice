@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { fetchProducts, addProduct, updateProduct, deleteProduct } from '../features/products/productSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { Product } from '../types';
 
 export const useProducts = () => {
-  const dispatch = useDispatch();
-  const { items: products, status, error } = useSelector((state) => state.products);
+  const dispatch = useAppDispatch();
+  const { items: products, status, error } = useAppSelector((state) => state.products);
 
   // Fetch initial data if idle
   useEffect(() => {
@@ -13,34 +14,27 @@ export const useProducts = () => {
     }
   }, [status, dispatch]);
 
-  // Derived state using professional approaches:
-  // 1. apply array reduce method to count total inventory monetary value
   const totalValue = useMemo(() => {
     return products.reduce((total, product) => total + Number(product.price || 0), 0);
   }, [products]);
 
-  // Handler functions encapsulating dispatches
-  const createProduct = async (productData) => {
-    // Explanation: Wrap in await/try-catch if you want the component to act on success,
-    // otherwise the slice handles state automatically.
+  const createProduct = async (productData: Omit<Product, 'id'>) => {
     return dispatch(addProduct(productData)).unwrap();
   };
 
-  const editProduct = async (productData) => {
+  const editProduct = async (productData: Product) => {
     return dispatch(updateProduct(productData)).unwrap();
   };
 
-  const removeProduct = async (id) => {
+  const removeProduct = async (id: string | number) => {
     return dispatch(deleteProduct(id)).unwrap();
   };
 
-  // Find a specific product by ID
-  const getProductById = (id) => {
+  const getProductById = (id: string | number): Product | undefined => {
     return products.find(product => product.id === id);
   };
 
-  // Filter products by a minimum price
-  const getProductsAbovePrice = (price) => {
+  const getProductsAbovePrice = (price: number): Product[] => {
     return products.filter(product => Number(product.price) > price);
   };
 

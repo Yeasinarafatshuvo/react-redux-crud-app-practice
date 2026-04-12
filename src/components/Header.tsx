@@ -1,7 +1,7 @@
+import React from 'react';
 import { useCart } from '../hooks/useCart';
 
-const Header = () => {
-  // Directly consuming the Redux state via custom hook instead of props!
+const Header: React.FC = () => {
   const { totalCartQuantity } = useCart();
 
   return (

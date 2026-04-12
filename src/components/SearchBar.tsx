@@ -1,4 +1,11 @@
-const SearchBar = ({ filterPrice, setFilterPrice }) => {
+import React from 'react';
+
+interface SearchBarProps {
+  filterPrice: number;
+  setFilterPrice: (price: number) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ filterPrice, setFilterPrice }) => {
   return (
     <div className="filter-bar">
       <h2>Product List</h2>

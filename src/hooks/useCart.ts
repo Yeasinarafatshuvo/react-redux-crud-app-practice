@@ -1,28 +1,27 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { addToCart, removeFromCart, clearCart } from '../features/cart/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../app/store';
+import { Product } from '../types';
 
 export const useCart = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   
-  // Directly select cart slice state
-  const { items: cartItems } = useSelector((state) => state.cart);
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  // use reduce to calculate total quantity of items in the cart
   const totalCartQuantity = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
 
-  // use reduce to calculate total price of exactly what is in the cart
   const totalCartPrice = useMemo(() => {
-    return cartItems.reduce((total, item) => total + (Number(item.product.price) * item.quantity), 0);
+    return cartItems.reduce((total, item) => total + (Number(item.product.price || 0) * item.quantity), 0);
   }, [cartItems]);
 
-  const addProductToCart = (product) => {
+  const addProductToCart = (product: Product) => {
     dispatch(addToCart(product));
   };
 
-  const removeProductFromCart = (productId) => {
+  const removeProductFromCart = (productId: string | number) => {
     dispatch(removeFromCart(productId));
   };
 

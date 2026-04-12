@@ -1,28 +1,28 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useProducts } from './hooks/useProducts';
 import Header from './components/Header';
 import Stats from './components/Stats';
 import ProductForm from './components/ProductForm';
 import SearchBar from './components/SearchBar';
 import ProductCard from './components/ProductCard';
+import { Product } from './types';
 
 function App() {
-  // We no longer need totalValue or removeProduct here since children components get them directly!
   const { products, status, error, createProduct, editProduct } = useProducts();
 
-  const [formData, setFormData] = useState({ id: '', name: '', price: '', category: '' });
+  const [formData, setFormData] = useState<Product | Omit<Product, 'id'>>({ id: '', name: '', price: '' as unknown as number, category: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [filterPrice, setFilterPrice] = useState(0);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value
-    }));
+    }) as Product | Omit<Product, 'id'>);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.price || !formData.category) {
       alert("Please fill all fields");
@@ -31,7 +31,7 @@ function App() {
 
     try {
       if (isEditing) {
-        await editProduct(formData);
+        await editProduct(formData as Product);
       } else {
         await createProduct({ 
           name: formData.name, 
@@ -45,13 +45,13 @@ function App() {
     }
   };
 
-  const handleEditClick = (product) => {
+  const handleEditClick = (product: Product) => {
     setFormData({ ...product });
     setIsEditing(true);
   };
 
   const resetForm = () => {
-    setFormData({ id: '', name: '', price: '', category: '' });
+    setFormData({ id: '', name: '', price: '' as unknown as number, category: '' });
     setIsEditing(false);
   };
 
@@ -61,7 +61,6 @@ function App() {
     <div className="dashboard">
       <Header />
 
-      {/* Stats NO LONGER takes props! It fetches data itself from Redux. */}
       <Stats />
 
       <div className="main-content">
@@ -87,7 +86,6 @@ function App() {
                 key={product.id} 
                 product={product} 
                 onEditClick={handleEditClick} 
-                // Notice: We NO LONGER pass onDelete prop down! The child calls removeProduct via Redux directly.
               />
             ))}
             

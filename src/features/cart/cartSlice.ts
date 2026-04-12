@@ -1,29 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Product, CartItem } from '../../types';
 
-const initialState = {
-  items: [], // Array of { product, quantity }
+interface CartState {
+  items: CartItem[];
+}
+
+const initialState: CartState = {
+  items: [],
 };
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
+    addToCart: (state, action: PayloadAction<Product>) => {
       const productToAdd = action.payload;
-      // Use find to check if item already exists in cart
       const existingItem = state.items.find(item => item.product.id === productToAdd.id);
       
       if (existingItem) {
-        // If it exists, increase quantity
         existingItem.quantity += 1;
       } else {
-        // Use spread operator or array push to add new item
         state.items.push({ product: productToAdd, quantity: 1 });
       }
     },
-    removeFromCart: (state, action) => {
+    removeFromCart: (state, action: PayloadAction<string | number>) => {
       const productId = action.payload;
-      // Use filter to remove item
       state.items = state.items.filter(item => item.product.id !== productId);
     },
     clearCart: (state) => {

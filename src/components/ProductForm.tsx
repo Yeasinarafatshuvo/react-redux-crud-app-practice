@@ -1,4 +1,15 @@
-const ProductForm = ({ formData, handleChange, handleSubmit, isEditing, resetForm }) => {
+import React from 'react';
+import { Product } from '../types';
+
+interface ProductFormProps {
+  formData: Product | Omit<Product, 'id'>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  isEditing: boolean;
+  resetForm: () => void;
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({ formData, handleChange, handleSubmit, isEditing, resetForm }) => {
   return (
     <div className="form-container">
       <h2>{isEditing ? 'Edit Product' : 'Add New Product'}</h2>
@@ -9,7 +20,7 @@ const ProductForm = ({ formData, handleChange, handleSubmit, isEditing, resetFor
             type="text" 
             id="name" 
             name="name" 
-            value={formData.name} 
+            value={formData.name || ''} 
             onChange={handleChange} 
             placeholder="e.g. Headphones"
           />
@@ -21,7 +32,7 @@ const ProductForm = ({ formData, handleChange, handleSubmit, isEditing, resetFor
             type="number" 
             id="price" 
             name="price" 
-            value={formData.price} 
+            value={formData.price || ''} 
             onChange={handleChange} 
             placeholder="e.g. 199"
           />
@@ -33,7 +44,7 @@ const ProductForm = ({ formData, handleChange, handleSubmit, isEditing, resetFor
             type="text" 
             id="category" 
             name="category" 
-            value={formData.category} 
+            value={formData.category || ''} 
             onChange={handleChange} 
             placeholder="e.g. Electronics"
           />
